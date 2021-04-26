@@ -1,0 +1,11 @@
+{
+  "name": "wednesday-bot",
+  "version": "1.0.0",
+  "description": "Wednesday is a simple discord bot for Valheim.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Martin Mazur",
+  "license": "MIT"
+}
