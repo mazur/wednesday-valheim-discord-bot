@@ -1,0 +1,8 @@
+{
+    "BOT_TOKEN": "put your discord bot token here",
+    "CHANNEL_ID": "put channedl id for announcemnets here",
+    "G_PORTAL_URL": "put url to g-portal json api here",
+    "COMMAND_PREFIX": "!",
+    "LANG": "swe",
+    "REFRESH": 5000
+}
