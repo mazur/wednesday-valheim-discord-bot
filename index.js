@@ -1,8 +1,15 @@
+require('dotenv').config();
+
 const discord = require("discord.js");
 const https = require("https");
 
-const config = extend(require("./config.json"), getEnvConfig());
-const text = require("./lang/" + config.LANG + ".json")
+const config = extend(require("./config.json"), {
+  "BOT_TOKEN": process.env.BOT_TOKEN,
+  "CHANNEL_ID": process.env.CHANNEL_ID,
+  "G_PORTAL_ID": process.env.G_PORTAL_URL
+});
+
+const text = require("./lang/" + config.LANG + ".json");
 
 const client = new discord.Client();
 
@@ -11,19 +18,11 @@ var lastServerInfo;
 function extend (obj1, obj2) {
   var result = obj1, val;
   for (val in obj2) {
-    if (obj2.hasOwnProperty(val)) {
+    if (obj2.hasOwnProperty(val) && obj2[val] !== undefined) {
       result[val] = obj2[val];
     }
   }
   return result;
-}
-
-function getEnvConfig() {
-  return {
-    "BOT_TOKEN": process.env.BOT_TOKEN,
-    "CHANNEL_ID": process.env.CHANNEL_ID,
-    "G_PORTAL_URL": process.env.G_PORTAL_URL
-  }
 }
 
 function sendMessage(message) {
