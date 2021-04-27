@@ -32,10 +32,10 @@ function sendMessage(message) {
 
 function playerCountChanged(oldCount, newCount) {
   if(oldCount < newCount) {
-    sendMessage(`${text.PLAYER_CAME_ONLINE} (${newCount}/${serverInfo.maxPlayers}) ${text.VIKINGS_ONLINE}!`);
+    sendMessage(`${text.PLAYER_CAME_ONLINE} (${newCount}/${lastServerInfo.maxPlayers}) ${text.VIKINGS_ONLINE}!`);
   }
   else if (oldCount > newCount){
-    sendMessage(`${text.PLAYER_WENT_OFFLINE} (${newCount}/${serverInfo.maxPlayers}) ${text.VIKINGS_ONLINE}!`);
+    sendMessage(`${text.PLAYER_WENT_OFFLINE} (${newCount}/${lastServerInfo.maxPlayers}) ${text.VIKINGS_ONLINE}!`);
   }
 }
 
