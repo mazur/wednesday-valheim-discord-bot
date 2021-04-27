@@ -6,7 +6,7 @@ const https = require("https");
 const config = extend(require("./config.json"), {
   "BOT_TOKEN": process.env.BOT_TOKEN,
   "CHANNEL_ID": process.env.CHANNEL_ID,
-  "G_PORTAL_ID": process.env.G_PORTAL_URL
+  "G_PORTAL_ID": process.env.G_PORTAL_ID
 });
 
 const text = require("./lang/" + config.LANG + ".json");
