@@ -1,12 +1,30 @@
 const discord = require("discord.js");
 const https = require("https");
 
-const config = require("./config.json");
+const config = extend(require("./config.json"), getEnvConfig());
 const text = require("./lang/" + config.LANG + ".json")
 
 const client = new discord.Client();
 
 var lastServerInfo;
+
+function extend (obj1, obj2) {
+  var result = obj1, val;
+  for (val in obj2) {
+    if (obj2.hasOwnProperty(val)) {
+      result[val] = obj2[val];
+    }
+  }
+  return result;
+}
+
+function getEnvConfig() {
+  return {
+    "BOT_TOKEN": process.env.BOT_TOKEN,
+    "CHANNEL_ID": process.env.CHANNEL_ID,
+    "G_PORTAL_URL": process.env.G_PORTAL_URL
+  }
+}
 
 function sendMessage(message) {
   const channel = client.channels.cache.get(config.CHANNEL_ID);
@@ -46,7 +64,7 @@ function updateServerInfo(serverInfo) {
 }
 
 function readServerData() {
-  https.get(config.G_PORTAL_URL, function(res){
+  https.get("https://api.g-portal.com/gameserver/query/" + config.G_PORTAL_ID, function(res){
       res.on("data", data => {
         var response = JSON.parse(data);
         updateServerInfo(response);
