@@ -17,7 +17,7 @@ function playerCountChanged(oldCount, newCount) {
   if(oldCount < newCount) {
     sendMessage(`${text.PLAYER_CAME_ONLINE} (${newCount}/${serverInfo.maxPlayers}) ${text.VIKINGS_ONLINE}!`);
   }
-  else if (lastServerInfo.currentPlayers > serverInfo.currentPlayers){
+  else if (oldCount > newCount){
     sendMessage(`${text.PLAYER_WENT_OFFLINE} (${newCount}/${serverInfo.maxPlayers}) ${text.VIKINGS_ONLINE}!`);
   }
 }
