@@ -1,9 +1,10 @@
 require("dotenv").config();
+const config = extend(require("./config.json"), process.env);
+
+const logger = require('pino')({level: config.LOG_LEVEL});
 
 const discord = require("discord.js");
 const https = require("https");
-
-const config = extend(require("./config.json"), process.env);
 
 const text = require(`./lang/${config.LANG}.json`);
 
@@ -23,10 +24,16 @@ function extend (obj1, obj2) {
 
 function sendMessage(message) {
   const channel = client.channels.cache.get(config.CHANNEL_ID);
-  channel.send(message);
+  if (channel != undefined) {
+    channel.send(message);
+  }
+  else {
+    logger.error("Discord channel was not found!");
+  }
 }
 
 function playerCountChanged(oldCount, newCount) {
+  logger.info("Player count changed!");
   if(oldCount < newCount) {
     sendMessage(`${text.PLAYER_CAME_ONLINE} (${newCount}/${lastServerInfo.maxPlayers}) ${text.VIKINGS_ONLINE}!`);
   }
@@ -36,6 +43,7 @@ function playerCountChanged(oldCount, newCount) {
 }
 
 function serverStatusChanged(oldStatus, newStatus) {
+  logger.info("Server status changed!");
   if(newStatus) {
     sendMessage(text.SERVER_CAME_ONLINE);
   }
@@ -45,7 +53,11 @@ function serverStatusChanged(oldStatus, newStatus) {
 }
 
 function updateServerInfo(serverInfo) {
-  if (serverInfo == undefined) return;
+  if (serverInfo == undefined) {
+    logger.error("Trying to update with undefined serverInfo, update skipped.")
+    return;
+  }
+
   if (lastServerInfo != undefined) {
     if(lastServerInfo.currentPlayers != serverInfo.currentPlayers) {
       playerCountChanged(lastServerInfo.currentPlayers, serverInfo.currentPlayers);
@@ -59,13 +71,13 @@ function updateServerInfo(serverInfo) {
 }
 
 function readServerData() {
-  https.get("https://api.g-portal.com/gameserver/query/" + config.G_PORTAL_ID, function(res){
+  https.get(`https://api.g-portal.com/gameserver/query/${config.G_PORTAL_ID}`, function(res){
       res.on("data", data => {
         var response = JSON.parse(data);
         updateServerInfo(response);
       });
   }).on("error", function(e){
-        console.log("Got an error reading server info: ", e);
+        logger.error("Got an error reading server info from g-portal: ", e);
   });
 }
 
@@ -97,3 +109,5 @@ client.on("message", function(message) {
 });
 
 client.login(config.BOT_TOKEN);
+
+logger.info("Bot started...");

@@ -1,5 +1,6 @@
 {
     "COMMAND_PREFIX": "!",
     "LANG": "swe",
-    "REFRESH": 5000
+    "REFRESH": 5000,
+    "LOG_LEVEL": "info"
 }
