@@ -1,22 +1,18 @@
-require('dotenv').config();
+require("dotenv").config();
 
 const discord = require("discord.js");
 const https = require("https");
 
-const config = extend(require("./config.json"), {
-  "BOT_TOKEN": process.env.BOT_TOKEN,
-  "CHANNEL_ID": process.env.CHANNEL_ID,
-  "G_PORTAL_ID": process.env.G_PORTAL_ID
-});
+const config = extend(require("./config.json"), process.env);
 
-const text = require("./lang/" + config.LANG + ".json");
+const text = require(`./lang/${config.LANG}.json`);
 
 const client = new discord.Client();
 
-var lastServerInfo;
+let lastServerInfo;
 
 function extend (obj1, obj2) {
-  var result = obj1, val;
+  let result = obj1, val;
   for (val in obj2) {
     if (obj2.hasOwnProperty(val) && obj2[val] !== undefined) {
       result[val] = obj2[val];

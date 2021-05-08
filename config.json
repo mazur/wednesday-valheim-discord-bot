@@ -1,7 +1,4 @@
 {
-    "BOT_TOKEN": "put your discord bot token here OR use ENV",
-    "CHANNEL_ID": "put channel id for announcemnets here OR use ENV",
-    "G_PORTAL_ID": "put id to g-portal server here OR use ENV",
     "COMMAND_PREFIX": "!",
     "LANG": "swe",
     "REFRESH": 5000
