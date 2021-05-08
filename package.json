@@ -4,12 +4,19 @@
   "description": "Wednesday is a simple discord bot for Valheim.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node index.js | node ./node_modules/pino-pretty/bin.js",
+    "prod": "node index.js | node ./node_modules/pino-logflare/dist/cli.js --key $LOGFLARE_KEY --source $LOGFLARE_SOURCE",
+    "start": "[[ $NODE_ENV = \"production\" ]] && npm run prod || npm run dev"
   },
   "author": "Martin Mazur",
   "license": "MIT",
   "dependencies": {
     "discord.js": "^12.5.3",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "pino": "^6.11.3",
+    "pino-logflare": "^0.3.8"
+  },
+  "devDependencies": {
+    "pino-pretty": "^4.7.1"
   }
 }
