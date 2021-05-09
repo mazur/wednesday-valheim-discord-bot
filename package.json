@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node index.js | node ./node_modules/pino-pretty/bin.js",
     "prod": "node index.js | node ./node_modules/pino-logflare/dist/cli.js --key $LOGFLARE_KEY --source $LOGFLARE_SOURCE",
-    "start": "[[ $NODE_ENV = \"production\" ]] && npm run prod || npm run dev"
+    "start": ";[[ $NODE_ENV = \"production\" ]] && npm run prod || npm run dev"
   },
   "author": "Martin Mazur",
   "license": "MIT",
