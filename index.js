@@ -1,7 +1,8 @@
 require("dotenv").config();
 const config = extend(require("./config.json"), process.env);
 
-const logger = require('pino')({level: config.LOG_LEVEL});
+const pino = require('pino');
+const logger = pino({level: config.LOG_LEVEL});
 
 const discord = require("discord.js");
 const https = require("https");
@@ -67,6 +68,7 @@ function updateServerInfo(serverInfo) {
       serverStatusChanged(lastServerInfo.online, serverInfo.online);
     }
   }
+
   lastServerInfo = serverInfo
 }
 
@@ -80,8 +82,6 @@ function readServerData() {
         logger.error("Got an error reading server info from g-portal: ", e);
   });
 }
-
-setInterval(readServerData, config.REFRESH);
 
 function commandWednesday(message, args) {
   message.reply(text.ITS_WEDNESDAY);
@@ -108,6 +108,16 @@ client.on("message", function(message) {
   }
 });
 
-client.login(config.BOT_TOKEN);
+process.on('uncaughtException', pino.final(logger, (err, finalLogger) => {
+  finalLogger.fatal(err, 'uncaughtException')
+  process.exit(1)
+}));
 
+process.on('unhandledRejection', pino.final(logger, (err, finalLogger) => {
+  finalLogger.fatal(err, 'unhandledRejection')
+  process.exit(1)
+}));
+
+setInterval(readServerData, config.REFRESH);
+client.login(config.BOT_TOKEN);
 logger.info("Bot started...");
