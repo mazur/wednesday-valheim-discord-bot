@@ -75,7 +75,15 @@ function updateServerInfo(serverInfo) {
 function readServerData() {
   https.get(`https://api.g-portal.com/gameserver/query/${config.G_PORTAL_ID}`, function(res){
       res.on("data", data => {
-        var response = JSON.parse(data);
+        let response;
+
+        try {
+          response = JSON.parse(data);
+        }
+        catch(e) {
+          logger.error("Could not parse JSON", e);
+        }
+        
         updateServerInfo(response);
       });
   }).on("error", function(e){
